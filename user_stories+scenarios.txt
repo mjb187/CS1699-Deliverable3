@@ -1,0 +1,141 @@
+Notes:
+* A "random image page" will be an image uploaded to our throwaway account.
+* A "general page" will probably be the homepage.
+
+----------------------------------------------------
+As an unregisted user,
+I want to be prompted to login or sign up when trying to interact with parts of the site
+so that I can track my activity and compare to the community.
+
+Given I am on a general page,
+when clicking sign in/sign up
+then I expect to be taken to a login/sign up page.
+
+Given I am on a random image page,
+when clicking favorite
+then I expect to be prompted to login or sign up.
+
+Given I am on a random image page
+when submitting a comment
+then I expect to be prompted to login or sign up.
+
+Given I am on a random image page,
+when clicking the upvote button
+then I expect to be prompted to login or sign up.
+
+Given I am on a random image page,
+when clicking the downvote button
+then I expect to be prompted to login or sign up.
+
+Given I am on a general page,
+when attempting to upload an image
+then I expect to be prompted to login or sign up.
+// FAIL
+
+----------------------------------------------------
+
+As a registered user,
+I want to be able to interact with the site via keyboard shortcuts
+so that I can easily browse the site without a mouse.
+
+Given I am on a random image page,
+when pressing <=
+then I expect to be taken to the "previous image" page.
+
+Given I am on a random image page,
+when pressing =>
+then I expect to be taken to the "next image" page.
+
+Given I am on a random image page,
+when pressing /\
+then I expect to upvote that image.
+
+Given I am on a random image page,
+when pressing \/
+then I expect to downvote that image.
+
+Given I am on a random image page,
+when pressing '0'
+then I expect to favorite that image.
+
+----------------------------------------------------
+
+As a registed mobile user,
+I want the same general functionality as a non-mobile user
+so that I can enjoy the website while I'm away from my computer.
+
+Given I am on a general page and not logged in,
+when I click the sign up link,
+then I expect to be taken to a sign up page.
+
+Given I am on a general page and not logged in,
+when I click the sign in link,
+then I expect to be taken to a sign in page.
+
+Given I am on a random image page
+when I swipe right,
+then I move to the next image page
+
+Given I am on a random image page
+when I swipe left,
+then I move to the previous image page.
+
+Given I am on a random image page and not at the top
+when I swipe up,
+then I move up the screen of the image page.
+
+Given I am on a random image page and not at the bottom
+when I swipe down,
+then I move down the screen of the image page.
+
+Given I am on a random image page and logged in
+when I press the upvote button,
+then the image counter should be incremented and there is visual indiction of that.
+
+Given I am on a random image page and logged in
+when I press the downvote button,
+then the image counter should be decremented and there is visual indiction of that.
+
+Given I am on a random image page and logged in
+when I press the favorite button (shaped as a heart),
+then the image should be saved into my favorite gallery and there is visual indiction of that.
+
+Given I am on the homepage and logged in
+when I press upload image followed by giving an image URL and pressing the start upload button,
+then my image is uploaded and in my images folder.
+
+// possibly add submit to gallery
+
+Given I am on a random image page and logged in
+when I press the comment box followed by typing a comment and the submit comment button,
+then a comment will appear below the image.
+
+Given I am on the homepage and logged in
+when I press the menu icon/button followed by the sign out button,
+then I am logged out of my account.
+
+----------------------------------------------------
+
+As a registed user,
+I want to interact with other users via comments
+so that I can part of the community and possibly increase "fake internet points."
+
+Given I am on a random image page and logged in
+// submit comment
+// upvote comment
+// downvote
+// reply (recursively)
+// report
+// delete
+// collapse all
+// expand all
+
+---------------------------------------------------
+// to do image viewing/unique pages/ multiple images
+As a unregisted user,
+I want images/albums to have unique pages
+so that I can reference specific images or albums directly.
+
+As a ,
+I want
+so that .
