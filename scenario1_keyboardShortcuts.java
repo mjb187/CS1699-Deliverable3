@@ -26,15 +26,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class scenario1_keyboardShortcuts 
 {
 	//shared driver object
-	WebDriver driver;
+	private static WebDriver driver;
 	
-	@Before
+	@BeforeClass
 	//setup web driver
-	public void initialize()
+	public static void setup()
 	{
 		//setup Firefox driver and implict waits
 		driver = new FirefoxDriver();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 		
 		//sign in
 		driver.get("http://imgur.com/signin");
@@ -42,51 +42,148 @@ public class scenario1_keyboardShortcuts
 		driver.findElement(By.cssSelector("input#username")).sendKeys("CS1699testaccount");
 		driver.findElement(By.cssSelector("p.password > input")).click();
 		driver.findElement(By.cssSelector("p.password > input")).sendKeys("laboon\n");
+		
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 	
-	@After
+	@AfterClass
 	//close web driver
-	public void uninitialize()
+	public static void tearDown()
 	{
 		//close Firefox driver
-		//driver.quit();
+		driver.quit();
 	}
 	
 	@Test
 	// Given I am on a random image page,
-	// when pressing <= (arrow key)
-	// then I expect to be taken to the "previous image" page.
-	
-	//and 
-	
-	// Given I am on a random image page,
 	// when pressing => (arrow key)
-	// then I expect to be taken to the "next image" page.
-	public void test_LeftRightArrowKeys() 
+	// then I expect to be taken to the "next image" page (the next image in the list).
+	public void test_RightArrowKey() 
 	{
-		//open one of our uploaded images
-		driver.get("http://imgur.com/gallery/X3m1TAG/new");
+		//open the homepage
+		driver.get("http://imgur.com/");
 		
-		//capture image element for comparison
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//capture page URL for comparison
 		String start_url = driver.getCurrentUrl();
 		
 		//send the right arrow key
 		driver.findElement(By.tagName("html")).sendKeys(Keys.ARROW_RIGHT);
 		
-		//capture image element for comparison
+		//capture page URL for comparison
 		String next_url = driver.getCurrentUrl();
 		
-		//elements should not be the same
+		//URLs should not be the same
 		assertNotEquals(start_url, next_url);
+	}
+	
+	@Test
+	// Given I am on a random image page,
+	// when pressing <= (arrow key)
+	// then I expect to be taken to the "previous image" page (the previous image in the list).
+	public void test_LeftArrowKey() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//capture page URL for comparison
+		String start_url = driver.getCurrentUrl();
 		
 		//send the left arrow key
 		driver.findElement(By.tagName("html")).sendKeys(Keys.ARROW_LEFT);
 		
-		//capture image element for comparison
+		//capture page URL for comparison
 		String prev_url = driver.getCurrentUrl();
 		
-		//elements should not be the same
-		assertNotEquals(prev_url, next_url);
+		//URLs should not be the same
+		assertNotEquals(start_url, prev_url);
+	}
+	
+	@Test
+	// Given I am on a random image page,
+	// when pressing '+' (actually the '=' key)
+	// then I expect to upvote that image.
+	public void test_plus() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//get the like counter value
+		String counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_before = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		
+		//send the + key
+		driver.findElement(By.tagName("html")).sendKeys("=");
+		
+		//get the new like counter value
+		counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_after = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		
+		//assert that the counter was incremented
+		assertEquals(counter_before+1, counter_after);
+	}
+	
+	@Test
+	// Given I am on a random image page,
+	// when pressing '-'
+	// then I expect to downvote that image.
+	public void test_minus() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//get the like counter value
+		String counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_before = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		
+		//send the - key
+		driver.findElement(By.tagName("html")).sendKeys("-");
+		
+		//get the new like counter value
+		counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_after = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		
+		//assert that the counter was decremented
+		assertEquals(counter_before, counter_after-1);
+	}
+	
+	@Test
+	// Given I am on a random image page,
+	// when pressing '0'
+	// then I expect to favorite that image.
+	public void test_favorite() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//get the like button's classes before
+		String classes_before = driver.findElement(By.cssSelector("span.favorite-image")).getAttribute("class");
+		
+		//send the 0 key
+		driver.findElement(By.tagName("html")).sendKeys("0");
+		
+		//get the like button's classes after
+		String classes_after = driver.findElement(By.cssSelector("span.favorite-image")).getAttribute("class");
+		
+		//assert that the like button has a "favorited" class applied after favoriting
+		assertTrue(classes_after.contains("favorited"));
+		
+		//assert that the like button did not have a "favorited" class prior to favoriting
+		assertFalse(classes_before.contains("favorited"));
 	}
 
 }
