@@ -13,10 +13,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /*
  * SCENARIO
  * 
- * As an unregisted user,
- * I want to be prompted to login or sign up when trying to interact with parts of the site
- * so that I can track my activity and compare to the community.
- *
+ * As a registered user,
+ * I want to be able to interact with the site via keyboard shortcuts
+ * so that I can easily browse the site without a mouse.
 */
 
 // IMGUR TEST ACCOUNT DETAILS
