@@ -123,5 +123,52 @@ public class scenario2_login
 		//assert that the login form is found
 		assertNotNull(e);
 	}
+	
+	@Test
+	// Given I am on a random image page
+	// when submitting a comment
+	// then I expect to be prompted to login or sign up.
+	public void test_comment() 
+	{
+		//open one of our uploaded images (to prevent spamming random images with comments)
+		driver.get("http://imgur.com/gallery/X3m1TAG");
+		
+		//enter a comment
+		driver.findElement(By.cssSelector("textarea#caption_textarea")).sendKeys("test comment submission\n");
+		
+		//check for a login form
+		WebElement e = driver.findElement(By.xpath("//iframe[@src='https://imgur.com/signin/modal' or @src='https://imgur.com/register/modal']"));
+		
+		//assert that the login form is found
+		assertNotNull(e);
+	}
+	
+	@Test
+	// Given I am on a general page,
+	// when attempting to upload an image
+	// then I expect to be prompted to login or sign up.
+	public void test_uploadButton() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the upload button
+		driver.findElement(By.cssSelector("a.upload-button")).click();
+		
+		//pass the form a URL to try to upload (need to spoof pasting into the text area)
+		driver.findElement(By.cssSelector("textarea#upload-global-link-input")).sendKeys("http://imgs.xkcd.com/comics/troubleshooting.png");
+		driver.findElement(By.cssSelector("textarea#upload-global-link-input")).sendKeys(Keys.CONTROL, "a");
+		driver.findElement(By.cssSelector("textarea#upload-global-link-input")).sendKeys(Keys.CONTROL, "c");
+		driver.findElement(By.cssSelector("textarea#upload-global-link-input")).sendKeys(Keys.CONTROL, "v");
+		
+		//click the start upload button
+		driver.findElement(By.cssSelector("button#upload-global-start-button")).click();
+		
+		//check for a login form
+		WebElement e = driver.findElement(By.xpath("//iframe[@src='https://imgur.com/signin/modal' or @src='https://imgur.com/register/modal']"));
+		
+		//assert that the login form is found
+		assertNotNull(e);
+	}
 
 }
