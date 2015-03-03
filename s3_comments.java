@@ -79,7 +79,7 @@ public class s3_comments
 		//click the random image icon
 		driver.findElement(By.cssSelector("div.random-icon")).click();
 		
-		//capture page URL\
+		//capture page URL
 		String url = driver.getCurrentUrl();
 		
 		//submit a comment
@@ -109,13 +109,15 @@ public class s3_comments
 		driver.findElement(By.cssSelector("div.random-icon")).click();
 		
 		//capture points value pre-like
-		int prelike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		String s_prelike = driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText();
+		int prelike = Integer.parseInt(s_prelike.trim().replaceAll(",", ""));
 		
 		//'like' image
 		driver.findElement(By.xpath("(//div[@title='like'])[1]")).click();
 		
 		//capture points value post-like
-		int postlike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		String s_postlike = driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText();
+		int postlike = Integer.parseInt(s_postlike.trim().replaceAll(",", ""));
 		
 		//assert that the value incremented
 		assertEquals(prelike+1, postlike);
@@ -134,23 +136,25 @@ public class s3_comments
 		driver.findElement(By.cssSelector("div.random-icon")).click();
 		
 		//capture points value pre-like
-		int prelike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		String s_prelike = driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText();
+		int prelike = Integer.parseInt(s_prelike.trim().replaceAll(",", ""));
 		
 		//'like' image
 		driver.findElement(By.xpath("(//div[@title='dislike'])[1]")).click();
 		
 		//capture points value post-like
-		int postlike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
-		
+		String s_postlike = driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText();
+		int postlike = Integer.parseInt(s_postlike.trim().replaceAll(",", ""));
+				
 		//assert that the value decremented
 		assertEquals(prelike-1, postlike);
 	}
 	
 	@Test
-	// Given I am on a random page and I have submitted a comment,
-	// when I delete my comment from the user's comments page,
-	// then I should not see that comment in the user page any longer.
-	public void test_delete() 
+	// Given I am on a random page and there are comments on the image,
+	// when I click a person's username,
+	// then I should see that person's comments.
+	public void test_users() 
 	{
 		//open the homepage
 		driver.get("http://imgur.com/");
@@ -158,17 +162,91 @@ public class s3_comments
 		//click the random image icon
 		driver.findElement(By.cssSelector("div.random-icon")).click();
 		
-		//capture points value pre-like
-		int prelike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		//click a username
+		driver.findElement(By.xpath("((//div[@class='author'])[1]/a)[1]")).click();
+	
+		//grab the comment elements from this page
+		List e = driver.findElements(By.cssSelector("div.comment-item"));
 		
-		//'like' image
-		driver.findElement(By.xpath("(//div[@title='dislike'])[1]")).click();
+		//assert there is at least one comment associated with this user
+		assertTrue(e.size() > 0);
 		
-		//capture points value post-like
-		int postlike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		//I was initially going to test that there was a link to the image page we
+		//	arrived at this user's page from in the same vein as the comment submission itself,
+		//	but that did not work because not all comments are loaded at once when the page
+		//	is generated; therefore the test can pass or fail based on which comments are
+		//	loaded at the topmost part of the page instead of the whole list of the user's
+		//	submitted comments.
+	}
+	
+	@Test
+	// Given I am on a random page and there are comments on the image,
+	// when I click "expand all",
+	// then more comments should load on the page.
+	public void test_expand() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
 		
-		//assert that the value deccremented
-		assertEquals(prelike-1, postlike);
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//if the option to expand all exists
+		if(driver.findElement(By.cssSelector("a#expand-comments")) != null)
+		{	
+			//capture element list initially
+			List e1 = driver.findElements(By.cssSelector("div.comment"));
+			
+			//expand
+			driver.findElement(By.cssSelector("a#expand-comments")).click();
+			
+			//capture element list after expanding
+			List e2 = driver.findElements(By.cssSelector("div.comment"));
+			
+			//assert that there are more comments on the page after expanding the list
+			assertTrue(e1.size() < e2.size());
+		}
+		else
+		{
+			fail("No expand all option.");
+		}
+	}
+	
+	@Test
+	// Given I am on a random page and there are comments on the image and the comments have been expanded,
+	// when I click "collapse all",
+	// then less comments should exist on the page.
+	public void test_collapse() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//if the option to expand all exists
+		if(driver.findElement(By.cssSelector("a#expand-comments")) != null)
+		{	
+			//expand
+			driver.findElement(By.cssSelector("a#expand-comments")).click();
+			
+			//capture element list initially
+			List e1 = driver.findElements(By.cssSelector("div.comment"));
+			
+			//collapse (incidentally, it's the same element)
+			driver.findElement(By.cssSelector("a#expand-comments")).click();
+			
+			//capture element list after collapsing
+			List e2 = driver.findElements(By.cssSelector("div.comment"));
+			
+			//assert that there are more comments on the page after expanding the list
+			assertTrue(e1.size() > e2.size());
+			//these numbers will actually be equal
+		}
+		else
+		{
+			fail("No expand all option.");
+		}
 	}
 	
 

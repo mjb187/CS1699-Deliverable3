@@ -115,18 +115,18 @@ public class s1_keyboardShortcuts
 		driver.findElement(By.cssSelector("div.random-icon")).click();
 		
 		//get the like counter value
-		String counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
-		int counter_before = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		String s_counter_before = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_before = Integer.parseInt(s_counter_before.trim().replaceAll(",", ""));
 		
 		//send the + key
 		driver.findElement(By.tagName("html")).sendKeys("=");
 		
 		//get the new like counter value
-		counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
-		int counter_after = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		String s_counter_after = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_after = Integer.parseInt(s_counter_after.trim().replaceAll(",", ""));
 		
 		//assert that the counter was incremented
-		assertEquals(counter_before+1, counter_after);
+		assertTrue(counter_before < counter_after);
 	}
 	
 	@Test
@@ -142,18 +142,19 @@ public class s1_keyboardShortcuts
 		driver.findElement(By.cssSelector("div.random-icon")).click();
 		
 		//get the like counter value
-		String counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
-		int counter_before = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		String s_counter_before = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_before = Integer.parseInt(s_counter_before.trim().replaceAll(",", ""));
 		
 		//send the - key
 		driver.findElement(By.tagName("html")).sendKeys("-");
 		
 		//get the new like counter value
-		counter = driver.findElement(By.cssSelector("div.point-info > span")).getText();
-		int counter_after = Integer.parseInt(counter.trim().replaceAll(",", ""));
+		String s_counter_after = driver.findElement(By.cssSelector("div.point-info > span")).getText();
+		int counter_after = Integer.parseInt(s_counter_after.trim().replaceAll(",", ""));
 		
 		//assert that the counter was decremented
-		assertEquals(counter_before, counter_after-1);
+		System.out.println(counter_before + " | " + counter_after);
+		assertTrue(counter_before > counter_after);
 	}
 	
 	@Test
