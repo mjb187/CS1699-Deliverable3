@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * SCENARIO
@@ -47,7 +46,7 @@ public class scenario1_keyboardShortcuts
 	
 	@AfterClass
 	//close web driver
-	public static void tearDown()
+	public static void teardown()
 	{
 		//close Firefox driver
 		driver.quit();
@@ -57,7 +56,7 @@ public class scenario1_keyboardShortcuts
 	// Given I am on a random image page,
 	// when pressing => (arrow key)
 	// then I expect to be taken to the "next image" page (the next image in the list).
-	public void test_RightArrowKey() 
+	public void test_rightArrowKey() 
 	{
 		//open the homepage
 		driver.get("http://imgur.com/");
@@ -82,7 +81,7 @@ public class scenario1_keyboardShortcuts
 	// Given I am on a random image page,
 	// when pressing <= (arrow key)
 	// then I expect to be taken to the "previous image" page (the previous image in the list).
-	public void test_LeftArrowKey() 
+	public void test_leftArrowKey() 
 	{
 		//open the homepage
 		driver.get("http://imgur.com/");
@@ -160,7 +159,7 @@ public class scenario1_keyboardShortcuts
 	@Test
 	// Given I am on a random image page,
 	// when pressing '0'
-	// then I expect to favorite that image.
+	// then I expect to have that image added to my account's favorites list.
 	public void test_favorite() 
 	{
 		//open the homepage
@@ -172,6 +171,9 @@ public class scenario1_keyboardShortcuts
 		//get the like button's classes before
 		String classes_before = driver.findElement(By.cssSelector("span.favorite-image")).getAttribute("class");
 		
+		//assert that the like button did not have a "favorited" class prior to favoriting
+		assertFalse(classes_before.contains("favorited"));
+		
 		//send the 0 key
 		driver.findElement(By.tagName("html")).sendKeys("0");
 		
@@ -181,8 +183,18 @@ public class scenario1_keyboardShortcuts
 		//assert that the like button has a "favorited" class applied after favoriting
 		assertTrue(classes_after.contains("favorited"));
 		
-		//assert that the like button did not have a "favorited" class prior to favoriting
-		assertFalse(classes_before.contains("favorited"));
+		//save image ID
+		String id = driver.getCurrentUrl();
+		id = id.substring(id.lastIndexOf('/')+1);
+		
+		//go to the user's favorites page
+		driver.get("http://imgur.com/account/favorites");
+		
+		//grab the element with this image ID
+		WebElement e = driver.findElement(By.cssSelector("div#" + id));
+		
+		//assert that there exists an element with the same image ID
+		assertNotNull(e);
 	}
 
 }
