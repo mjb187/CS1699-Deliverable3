@@ -20,7 +20,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  * so that I can be part of the community and increase my "internet points."
 */
 
-public class scenario3_comments
+public class s3_comments
 {
 	//shared driver object
 	private static WebDriver driver;
@@ -126,6 +126,31 @@ public class scenario3_comments
 	// when I click the 'dislike' arrow,
 	// then I expect that comment to lose one 'point'.
 	public void test_dislike() 
+	{
+		//open the homepage
+		driver.get("http://imgur.com/");
+		
+		//click the random image icon
+		driver.findElement(By.cssSelector("div.random-icon")).click();
+		
+		//capture points value pre-like
+		int prelike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		
+		//'like' image
+		driver.findElement(By.xpath("(//div[@title='dislike'])[1]")).click();
+		
+		//capture points value post-like
+		int postlike = Integer.parseInt(driver.findElement(By.xpath("(//div[@class='author'])[1]/span")).getText());
+		
+		//assert that the value decremented
+		assertEquals(prelike-1, postlike);
+	}
+	
+	@Test
+	// Given I am on a random page and I have submitted a comment,
+	// when I delete my comment from the user's comments page,
+	// then I should not see that comment in the user page any longer.
+	public void test_delete() 
 	{
 		//open the homepage
 		driver.get("http://imgur.com/");

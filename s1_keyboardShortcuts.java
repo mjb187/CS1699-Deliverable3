@@ -10,9 +10,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /*
- * SCENARIO
+ * USER STORY
  * 
- * As a registered user,
+ * As a registered, logged-in user,
  * I want to be able to interact with the site via keyboard shortcuts
  * so that I can easily browse the site without a mouse.
 */
@@ -21,7 +21,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 // U: CS1699testaccount
 // P: laboon
 
-public class scenario1_keyboardShortcuts 
+public class s1_keyboardShortcuts 
 {
 	//shared driver object
 	private static WebDriver driver;

@@ -10,14 +10,14 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /*
- * SCENARIO
+ * USER STORY
  * 
  * As an unregisted user,
  * I want to be prompted to login or sign up when trying to interact with parts of the site
  * so that I can track my activity and contribute to the community.
 */
 
-public class scenario2_login
+public class s2_login
 {
 	//shared driver object
 	private static WebDriver driver;
